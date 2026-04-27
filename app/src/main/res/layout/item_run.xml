@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp">
+    <LinearLayout
+        android:layout_marginTop="3dp"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tanggal Lari"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/txt_run_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="22-03-2025"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Jarak Lari"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/txt_run_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="22-03-2025"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Durasi Lari"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/txt_run_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="22-03-2025"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

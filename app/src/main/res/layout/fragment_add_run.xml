@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp"
+    tools:context=".view.AddRunFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Let\'s Share"
+        android:textStyle="bold"
+        android:textSize="36sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_title2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="your journey!"
+        android:textSize="28sp"
+        app:layout_constraintTop_toBottomOf="@id/txt_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/txt_title"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Enter date"
+        app:layout_constraintTop_toBottomOf="@id/txt_title2"
+        app:layout_constraintStart_toStartOf="@id/txt_title2"
+        app:layout_constraintEnd_toEndOf="@id/txt_title2"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_run_distance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Masukkan jarak lari Anda"
+        app:layout_constraintTop_toBottomOf="@id/et_date"
+        app:layout_constraintStart_toStartOf="@id/et_date"
+        app:layout_constraintEnd_toEndOf="@id/et_date"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_run_duration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Masukkan durasi Anda"
+        app:layout_constraintTop_toBottomOf="@id/et_run_distance"
+        app:layout_constraintStart_toStartOf="@id/et_date"
+        app:layout_constraintEnd_toEndOf="@id/et_date"/>
+
+    <Button
+        android:id="@+id/btn_save_run"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Simpan"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
