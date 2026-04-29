@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.upn.catatlari.databinding.FragmentLoginBinding
-import com.upn.catatlari.model.User
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import com.upn.catatlari.data.local.database.AppDatabase
 
 class LoginFragment : Fragment() {
 
@@ -25,24 +27,33 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loginBinding.buttonLogin.setOnClickListener {
+
             val emailUser = loginBinding.etEmail.text.toString()
             val passwordUser = loginBinding.etPassword.text.toString()
 
-            if (emailUser.isEmpty() || passwordUser.isEmpty())
-                Toast.makeText(requireContext(), "Silahkan masukkan email/password, bro!", Toast.LENGTH_SHORT).show()
-            else {
-                // jika password salah, muncul pesan error
-                if (passwordUser != "123456")
-                    Toast.makeText(requireContext(), "Password Anda salah!", Toast.LENGTH_SHORT).show()
-                // jika password benar, maka berpindah ke MainActivity
-                else {
-                    // berpindah ke MainActivity
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    intent.putExtra("user", User(email = emailUser, password = passwordUser))
-                    startActivity(intent)
-                }
+            if (emailUser.isEmpty() || passwordUser.isEmpty()) {
+                Toast.makeText(requireContext(), "Isi semua data!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
+            val db = AppDatabase.getDatabase(requireContext())
+            val userDao = db.userDao()
+
+            lifecycleScope.launch {
+                val user = userDao.login(emailUser, passwordUser)
+
+                if (user != null) {
+                    Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    intent.putExtra("user", user.username)
+                    startActivity(intent)
+
+                } else {
+                    Toast.makeText(requireContext(), "Email atau password salah!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
+
 }
