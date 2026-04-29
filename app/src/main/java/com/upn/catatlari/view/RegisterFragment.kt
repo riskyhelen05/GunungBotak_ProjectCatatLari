@@ -50,6 +50,9 @@ class RegisterFragment : Fragment() {
                     )
                 )
 
+                val users = userDao.getAllUsers()
+                println("DATA USER: $users")
+
                 Toast.makeText(requireContext(), "Registrasi berhasil!", Toast.LENGTH_SHORT).show()
             }
         }
