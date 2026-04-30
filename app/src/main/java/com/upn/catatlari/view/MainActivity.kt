@@ -15,13 +15,13 @@ import com.upn.catatlari.model.User
 
 class MainActivity : AppCompatActivity() {
 
-    var user: User? = null
+    var username: String? = null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        user = intent.getParcelableExtra("user", User::class.java)
+        username = intent.getStringExtra("user")
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)

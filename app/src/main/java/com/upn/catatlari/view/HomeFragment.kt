@@ -11,33 +11,49 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.upn.catatlari.databinding.FragmentHomeBinding
 import com.upn.catatlari.model.Run
 import com.upn.catatlari.viewmodel.RunViewModel
+import android.util.Log
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val runViewModel: RunViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        val user = (activity as MainActivity).user
-        binding.welcomingTxt.text = "Halo, ${user?.email}"
-
-        binding.floatingBtnAddRun.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.Companion.actionHomeFragmentToAddRunFragment())
-        }
-
-        val runAdapter = RunAdapter()
-
-        binding.rvRunList.layoutManager = LinearLayoutManager(requireContext())
-        runViewModel.runHistory.observe(viewLifecycleOwner) { runList ->
-            runAdapter.setData(runList)
-        }
-
-        binding.rvRunList.adapter = runAdapter
-
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        // ✅ 1. Ambil user
+        val username = (activity as MainActivity).username
+        val nama = username?.substringBefore("@")
+
+        binding.welcomingTxt.text = "Halo, ${nama ?: "User"} 👋"
+
+        // ✅ 2. Setup adapter
+        val runAdapter = RunAdapter()
+        binding.rvRunList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvRunList.adapter = runAdapter
+
+        // ✅ 3. Observe data
+        runViewModel.runHistory.observe(viewLifecycleOwner) { runList ->
+            Log.d("HOME_RUN", "Data diterima: $runList")
+            runAdapter.setData(runList)
+
+            // 🔥 AUTO SCROLL KE BAWAH
+            binding.rvRunList.scrollToPosition(runList.size - 1)
+        }
+
+        // ✅ 4. Tombol tambah
+        binding.floatingBtnAddRun.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToAddRunFragment()
+            )
+        }
+    }
 }
