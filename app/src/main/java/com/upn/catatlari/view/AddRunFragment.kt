@@ -10,16 +10,16 @@ import androidx.navigation.fragment.findNavController
 import com.upn.catatlari.databinding.FragmentAddRunBinding
 import com.upn.catatlari.model.Run
 import com.upn.catatlari.viewmodel.RunViewModel
+import android.widget.Toast
+import android.util.Log
 
 class AddRunFragment : Fragment() {
 
     private lateinit var binding: FragmentAddRunBinding
-    val runViewModel: RunViewModel by activityViewModels()
+    private val runViewModel: RunViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
         binding = FragmentAddRunBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -27,14 +27,44 @@ class AddRunFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSaveRun.setOnClickListener {
+
             val runDate = binding.etDate.text.toString()
             val runDuration = binding.etRunDuration.text.toString()
             val runDistance = binding.etRunDistance.text.toString()
 
-            val runInput = Run(runDate = runDate, runDuration = runDuration.toInt(), runDistance = runDistance.toInt())
+            // ✅ validasi kosong
+            if (runDate.isEmpty() || runDuration.isEmpty() || runDistance.isEmpty()) {
+                Toast.makeText(requireContext(), "Semua field harus diisi!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            // ✅ validasi angka
+            val duration = runDuration.toIntOrNull()
+            val distance = runDistance.toIntOrNull()
+
+            if (duration == null || distance == null) {
+                Toast.makeText(requireContext(), "Durasi & jarak harus angka!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val runInput = Run(
+                runDate = runDate,
+                runDuration = duration,
+                runDistance = distance
+            )
+
+            Log.d("ADD_RUN", "Data ditambahkan: $runInput")
+
+            // ✅ simpan ke ViewModel
             runViewModel.addRun(runInput)
-            findNavController().popBackStack() // kembali ke halaman sebelumnya
+
+            Toast.makeText(requireContext(), "Data berhasil disimpan!", Toast.LENGTH_SHORT).show()
+
+            // kembali ke home
+            // delay kecil biar LiveData update dulu
+            view?.post {
+                findNavController().popBackStack()
+            }
         }
     }
 }
