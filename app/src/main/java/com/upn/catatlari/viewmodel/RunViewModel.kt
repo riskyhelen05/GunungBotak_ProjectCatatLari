@@ -10,7 +10,9 @@ class RunViewModel(application: Application) : AndroidViewModel(application) {
 
     private val runDao = AppDatabase.getDatabase(application).runDao()
 
-    val runHistory: LiveData<List<RunEntity>> = runDao.getAllRuns()
+    fun getRunsByUser(userId: Int): LiveData<List<RunEntity>> {
+        return runDao.getRunsByUser(userId)
+    }
 
     fun addRun(run: RunEntity) {
         viewModelScope.launch {
