@@ -1,19 +1,21 @@
 package com.upn.catatlari.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.upn.catatlari.model.Run
+import android.app.Application
+import androidx.lifecycle.*
+import com.upn.catatlari.data.local.database.AppDatabase
+import com.upn.catatlari.data.local.entity.RunEntity
+import kotlinx.coroutines.launch
 
-class RunViewModel : ViewModel() {
+class RunViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val runListLiveData = MutableLiveData<List<Run>>(emptyList())
-    var runHistory: LiveData<List<Run>> = runListLiveData
+    private val runDao = AppDatabase.getDatabase(application).runDao()
 
-    fun addRun(run: Run) {
-        val currentList = runListLiveData.value.orEmpty().toMutableList()
-        currentList.add(0, run)
-        runListLiveData.value = currentList
+    val runHistory: LiveData<List<RunEntity>> = runDao.getAllRuns()
+
+    fun addRun(run: RunEntity) {
+        viewModelScope.launch {
+            runDao.insertRun(run)
+        }
     }
 }
 

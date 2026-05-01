@@ -12,6 +12,7 @@ import com.upn.catatlari.model.Run
 import com.upn.catatlari.viewmodel.RunViewModel
 import android.widget.Toast
 import android.util.Log
+import com.upn.catatlari.data.local.entity.RunEntity
 
 class AddRunFragment : Fragment() {
 
@@ -53,7 +54,7 @@ class AddRunFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val runInput = Run(
+            val runInput = RunEntity(
                 runDate = runDate,
                 runDistance = distance,
                 runDuration = duration

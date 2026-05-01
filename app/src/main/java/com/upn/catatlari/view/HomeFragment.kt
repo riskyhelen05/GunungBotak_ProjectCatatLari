@@ -45,7 +45,6 @@ class HomeFragment : Fragment() {
             Log.d("HOME_RUN", "Data diterima: $runList")
             runAdapter.setData(runList)
 
-            // 🔥 AUTO SCROLL KE BAWAH
             binding.rvRunList.scrollToPosition(runList.size - 1)
         }
 

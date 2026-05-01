@@ -9,8 +9,7 @@ data class RunEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
-    val distance: Float,   // jarak lari (km)
-    val duration: Long,    // waktu (detik)
-    val calories: Int,     // kalori
-    val date: Long         // timestamp
+    val runDate: String,
+    val runDistance: Int,
+    val runDuration: Int
 )

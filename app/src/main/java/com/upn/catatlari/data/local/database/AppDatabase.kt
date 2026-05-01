@@ -7,14 +7,16 @@ import androidx.room.RoomDatabase
 import com.upn.catatlari.data.local.dao.UserDao
 import com.upn.catatlari.data.local.entity.RunEntity
 import com.upn.catatlari.data.local.entity.UserEntity
+import com.upn.catatlari.data.local.dao.RunDao
 
 @Database(
     entities = [UserEntity::class, RunEntity::class],
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
+    abstract fun runDao(): RunDao
 
     companion object {
         @Volatile
