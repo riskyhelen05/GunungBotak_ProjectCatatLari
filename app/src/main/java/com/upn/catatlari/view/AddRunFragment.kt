@@ -8,18 +8,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.upn.catatlari.databinding.FragmentAddRunBinding
-import com.upn.catatlari.model.Run
 import com.upn.catatlari.viewmodel.RunViewModel
 import android.widget.Toast
 import android.util.Log
 import com.upn.catatlari.data.local.entity.RunEntity
+import androidx.lifecycle.ViewModelProvider
 
 class AddRunFragment : Fragment() {
 
     private lateinit var binding: FragmentAddRunBinding
-    private val runViewModel: RunViewModel by activityViewModels()
+    private val runViewModel: RunViewModel by activityViewModels {
+        ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentAddRunBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -29,13 +35,26 @@ class AddRunFragment : Fragment() {
 
         binding.btnSaveRun.setOnClickListener {
 
+            val user = (activity as MainActivity).user
+
+            if (user == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "User tidak ditemukan, login ulang!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            // ✅ ambil input
             val runDate = binding.etDate.text.toString()
             val runDistance = binding.etRunDistance.text.toString()
             val runDuration = binding.etRunDuration.text.toString()
 
             // ✅ validasi kosong
             if (runDate.isEmpty() || runDistance.isEmpty() || runDuration.isEmpty()) {
-                Toast.makeText(requireContext(), "Semua field harus diisi!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Semua field harus diisi!", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
@@ -44,25 +63,32 @@ class AddRunFragment : Fragment() {
             val duration = runDuration.toIntOrNull()
 
             if (distance == null || duration == null) {
-                Toast.makeText(requireContext(), "Jarak & durasi harus angka!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Jarak & durasi harus angka!", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
             // ✅ validasi nilai
             if (distance <= 0 || duration <= 0) {
-                Toast.makeText(requireContext(), "Jarak & durasi harus lebih dari 0!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Jarak & durasi harus lebih dari 0!",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
-            val runInput = RunEntity(
+            // ✅ buat entity
+            val runEntity = RunEntity(
                 runDate = runDate,
                 runDistance = distance,
-                runDuration = duration
+                runDuration = duration,
+                userId = user.id
             )
 
-            Log.d("ADD_RUN", "Data ditambahkan: $runInput")
+            Log.d("ADD_RUN", "Data ditambahkan: $runEntity")
 
-            runViewModel.addRun(runInput)
+            runViewModel.addRun(runEntity)
 
             Toast.makeText(requireContext(), "Data berhasil disimpan!", Toast.LENGTH_SHORT).show()
 
