@@ -10,7 +10,7 @@ interface RunDao {
     @Insert
     suspend fun insertRun(run: RunEntity)
 
-    @Query("SELECT * FROM runs ORDER BY id DESC")
-    fun getAllRuns(): LiveData<List<RunEntity>>
+    @Query("SELECT * FROM runs WHERE userId = :userId ORDER BY id DESC")
+    fun getRunsByUser(userId: Int): LiveData<List<RunEntity>>
 
 }
