@@ -29,40 +29,43 @@ class AddRunFragment : Fragment() {
         binding.btnSaveRun.setOnClickListener {
 
             val runDate = binding.etDate.text.toString()
-            val runDuration = binding.etRunDuration.text.toString()
             val runDistance = binding.etRunDistance.text.toString()
+            val runDuration = binding.etRunDuration.text.toString()
 
             // ✅ validasi kosong
-            if (runDate.isEmpty() || runDuration.isEmpty() || runDistance.isEmpty()) {
+            if (runDate.isEmpty() || runDistance.isEmpty() || runDuration.isEmpty()) {
                 Toast.makeText(requireContext(), "Semua field harus diisi!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             // ✅ validasi angka
-            val duration = runDuration.toIntOrNull()
             val distance = runDistance.toIntOrNull()
+            val duration = runDuration.toIntOrNull()
 
-            if (duration == null || distance == null) {
-                Toast.makeText(requireContext(), "Durasi & jarak harus angka!", Toast.LENGTH_SHORT).show()
+            if (distance == null || duration == null) {
+                Toast.makeText(requireContext(), "Jarak & durasi harus angka!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // ✅ validasi nilai
+            if (distance <= 0 || duration <= 0) {
+                Toast.makeText(requireContext(), "Jarak & durasi harus lebih dari 0!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val runInput = Run(
                 runDate = runDate,
-                runDuration = duration,
-                runDistance = distance
+                runDistance = distance,
+                runDuration = duration
             )
 
             Log.d("ADD_RUN", "Data ditambahkan: $runInput")
 
-            // ✅ simpan ke ViewModel
             runViewModel.addRun(runInput)
 
             Toast.makeText(requireContext(), "Data berhasil disimpan!", Toast.LENGTH_SHORT).show()
 
-            // kembali ke home
-            // delay kecil biar LiveData update dulu
-            view?.post {
+            view.post {
                 findNavController().popBackStack()
             }
         }
