@@ -15,24 +15,27 @@ import com.upn.catatlari.model.User
 
 class MainActivity : AppCompatActivity() {
 
-    var username: String? = null
+    var user: User? = null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        username = intent.getStringExtra("user")
+        user = intent.getParcelableExtra("user", User::class.java)
+
+        android.util.Log.d("USER_MAIN", "User = $user")
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // 1. Connect BottomNavigation with Navigation Controller
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_nav_menu)
