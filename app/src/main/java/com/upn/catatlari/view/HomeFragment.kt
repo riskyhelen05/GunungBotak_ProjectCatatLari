@@ -1,6 +1,7 @@
 package com.upn.catatlari.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +10,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.upn.catatlari.databinding.FragmentHomeBinding
-import com.upn.catatlari.model.Run
 import com.upn.catatlari.viewmodel.RunViewModel
-import android.util.Log
+import androidx.lifecycle.ViewModelProvider
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private val runViewModel: RunViewModel by activityViewModels()
+    private val runViewModel: RunViewModel by activityViewModels {
+        ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,26 +31,35 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        // ✅ 1. Ambil user
-        val username = (activity as MainActivity).username
-        val nama = username?.substringBefore("@")
+        // ✅ Ambil user & username
+        val mainActivity = activity as MainActivity
+        val user = mainActivity.user
 
-        binding.welcomingTxt.text = "Halo, ${nama ?: "User"} 👋"
-
-        // ✅ 2. Setup adapter
-        val runAdapter = RunAdapter()
-        binding.rvRunList.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvRunList.adapter = runAdapter
-
-        // ✅ 3. Observe data
-        runViewModel.runHistory.observe(viewLifecycleOwner) { runList ->
-            Log.d("HOME_RUN", "Data diterima: $runList")
-            runAdapter.setData(runList)
-
-            binding.rvRunList.scrollToPosition(runList.size - 1)
+        if (user == null) {
+            Log.e("HOME", "User null!")
+            return
         }
 
-        // ✅ 4. Tombol tambah
+        binding.welcomingTxt.text = "Halo, ${user.email.substringBefore("@")}"
+
+        val runAdapter = RunAdapter()
+        binding.rvRunList.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = runAdapter
+        }
+
+        runViewModel.getRunsByUser(user.id)
+            .observe(viewLifecycleOwner) { runList ->
+
+                Log.d("HOME_RUN", "Data diterima: $runList")
+
+                runAdapter.setData(runList)
+
+                if (runList.isNotEmpty()) {
+                    binding.rvRunList.scrollToPosition(runList.size - 1)
+                }
+            }
+
         binding.floatingBtnAddRun.setOnClickListener {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToAddRunFragment()
