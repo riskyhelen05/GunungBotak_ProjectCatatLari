@@ -11,5 +11,6 @@ data class RunEntity(
 
     val runDate: String,
     val runDistance: Int,
-    val runDuration: Int
+    val runDuration: Int,
+    val userId: Int
 )

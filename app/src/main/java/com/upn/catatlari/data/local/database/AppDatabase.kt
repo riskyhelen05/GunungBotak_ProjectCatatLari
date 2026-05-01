@@ -11,7 +11,7 @@ import com.upn.catatlari.data.local.dao.RunDao
 
 @Database(
     entities = [UserEntity::class, RunEntity::class],
-    version = 2
+    version = 3
 )
 abstract class AppDatabase : RoomDatabase() {
 
