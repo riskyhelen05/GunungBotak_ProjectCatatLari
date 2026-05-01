@@ -46,7 +46,13 @@ class LoginFragment : Fragment() {
                     Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(requireContext(), MainActivity::class.java)
-                    intent.putExtra("user", user.username)
+                    val userModel = com.upn.catatlari.model.User(
+                        id = user.id,
+                        email = user.username,
+                        password = user.password
+                    )
+
+                    intent.putExtra("user", userModel)
                     startActivity(intent)
 
                 } else {
