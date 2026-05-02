@@ -10,6 +10,9 @@ class RunAdapter : RecyclerView.Adapter<RunAdapter.ViewHolder>() {
 
     private var runList = emptyList<RunEntity>()
 
+    var onDeleteClick: ((RunEntity) -> Unit)? = null
+    var onEditClick: ((RunEntity) -> Unit)? = null
+
     class ViewHolder(val binding: ItemRunBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -25,15 +28,12 @@ class RunAdapter : RecyclerView.Adapter<RunAdapter.ViewHolder>() {
         val hours = seconds / 3600
         val minutes = (seconds % 3600) / 60
         val secs = seconds % 60
-
         return String.format("%02d:%02d:%02d", hours, minutes, secs)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRunBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
         return ViewHolder(binding)
     }
@@ -48,6 +48,14 @@ class RunAdapter : RecyclerView.Adapter<RunAdapter.ViewHolder>() {
         holder.binding.txtRunDate.text = currentItem.runDate
         holder.binding.txtRunDistance.text = formatDistance(currentItem.runDistance)
         holder.binding.txtRunDuration.text = formatDuration(currentItem.runDuration)
+
+        holder.binding.btnDeleteRun.setOnClickListener {
+            onDeleteClick?.invoke(currentItem)
+        }
+
+        holder.binding.btnEditRun.setOnClickListener {
+            onEditClick?.invoke(currentItem)
+        }
     }
 
     fun setData(runItems: List<RunEntity>) {
