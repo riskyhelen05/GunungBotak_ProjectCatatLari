@@ -8,6 +8,16 @@
     android:padding="20dp"
     tools:context=".view.HomeFragment">
 
+    <ImageView
+        android:id="@+id/btn_logout"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@android:drawable/ic_lock_power_off"
+        app:tint="#EF4444"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/welcoming_txt" />
+
     <TextView
         android:id="@+id/welcoming_txt"
         android:layout_width="0dp"
@@ -15,32 +25,50 @@
         android:text="Halo, Zap!"
         android:textSize="32sp"
         android:textStyle="bold"
+        android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_logout"
         app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/ask_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Apa kabarmu hari ini?"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@id/welcoming_txt"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/welcoming_txt"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_btn_add_run"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="@color/biru"
-        app:srcCompat="@drawable/ic_add"
+        android:layout_margin="16dp"
+        android:backgroundTint="#4F46E5"
+        app:srcCompat="@android:drawable/ic_input_add"
         app:tint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_empty_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Belum ada data lari nih, yuk mulai lari!"
+        android:textColor="#6B7280"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@+id/rv_run_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_run_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         tools:listitem="@layout/item_run"
         app:layout_constraintTop_toBottomOf="@id/ask_txt"
         app:layout_constraintStart_toStartOf="parent"
