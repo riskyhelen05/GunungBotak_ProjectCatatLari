@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.upn.catatlari.R
 import com.upn.catatlari.data.local.database.AppDatabase
 import com.upn.catatlari.data.local.entity.UserEntity
 import com.upn.catatlari.databinding.FragmentRegisterBinding
@@ -19,11 +21,14 @@ class RegisterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.buttonRegister.setOnClickListener {
-
             val nama = binding.etNameSignup.text.toString()
             val email = binding.etEmailSignup.text.toString()
             val password = binding.etPasswordSignup.text.toString()
@@ -45,18 +50,19 @@ class RegisterFragment : Fragment() {
             lifecycleScope.launch {
                 userDao.insertUser(
                     UserEntity(
+                        nama = nama,
                         username = email,
                         password = password
                     )
                 )
 
-                val users = userDao.getAllUsers()
-                println("DATA USER: $users")
-
                 Toast.makeText(requireContext(), "Registrasi berhasil!", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
             }
         }
 
-        return binding.root
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 }

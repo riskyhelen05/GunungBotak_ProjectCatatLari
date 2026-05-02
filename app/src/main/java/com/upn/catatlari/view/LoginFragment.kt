@@ -1,5 +1,6 @@
 package com.upn.catatlari.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,15 +12,15 @@ import com.upn.catatlari.databinding.FragmentLoginBinding
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.upn.catatlari.data.local.database.AppDatabase
+import androidx.navigation.fragment.findNavController
+import com.upn.catatlari.R
 
 class LoginFragment : Fragment() {
 
     private lateinit var loginBinding: FragmentLoginBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
         loginBinding = FragmentLoginBinding.inflate(inflater, container, false)
-
         return loginBinding.root
     }
 
@@ -27,7 +28,6 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loginBinding.buttonLogin.setOnClickListener {
-
             val emailUser = loginBinding.etEmail.text.toString()
             val passwordUser = loginBinding.etPassword.text.toString()
 
@@ -43,23 +43,29 @@ class LoginFragment : Fragment() {
                 val user = userDao.login(emailUser, passwordUser)
 
                 if (user != null) {
-                    Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Masuk berhasil!", Toast.LENGTH_SHORT).show()
+
+                    // ✅ BIKIN GELANG VIP (SESSION) DI SINI
+                    val sharedPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+                    with(sharedPref.edit()) {
+                        putBoolean("isLoggedIn", true) // Tanda sudah masuk
+                        putInt("userId", user.id)      // Simpan ID
+                        putString("userName", user.nama) // Simpan Nama
+                        apply() // Simpan permanen
+                    }
 
                     val intent = Intent(requireContext(), MainActivity::class.java)
-                    val userModel = com.upn.catatlari.model.User(
-                        id = user.id,
-                        email = user.username,
-                        password = user.password
-                    )
-
-                    intent.putExtra("user", userModel)
                     startActivity(intent)
+                    requireActivity().finish()
 
                 } else {
-                    Toast.makeText(requireContext(), "Email atau password salah!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Email atau kata sandi salah!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
-    }
 
+        loginBinding.tvGoToRegister.setOnClickListener {
+            findNavController().navigate(R.id.registerFragment)
+        }
+    }
 }
