@@ -16,4 +16,10 @@ interface UserDao {
 
     @Query("SELECT * FROM users")
     suspend fun getAllUsers(): List<UserEntity>
+
+    @Query("SELECT * FROM users ORDER BY id DESC LIMIT 1")
+    suspend fun getLastUser(): UserEntity?
+
+    @androidx.room.Update
+    suspend fun updateUser(user: UserEntity)
 }

@@ -6,6 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.upn.catatlari.databinding.FragmentProfileBinding
+import com.upn.catatlari.R
+import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.lifecycleScope
+import com.upn.catatlari.data.local.database.AppDatabase
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
@@ -17,14 +22,27 @@ class ProfileFragment : Fragment() {
 
         binding.btnLogout.setOnClickListener { requireActivity().finish() }
 
-        // Edit profil
-//        binding.btnEditProfile.setOnClickListener {
-//            parentFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, EditProfileFragment())
-//                .addToBackStack(null)
-//                .commit()
-//        }
+        // Edit profile
+        binding.btnEditProfile.setOnClickListener {
+            findNavController().navigate(R.id.editProfileFragment)
+        }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val db = AppDatabase.getDatabase(requireContext())
+        val userDao = db.userDao()
+
+        lifecycleScope.launch {
+            val user = userDao.getLastUser()
+
+            if (user != null) {
+                binding.tvName.text = user.nama
+                binding.tvEmail.text = user.username
+            }
+        }
     }
 
 }
