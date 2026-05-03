@@ -22,4 +22,7 @@ interface UserDao {
 
     @androidx.room.Update
     suspend fun updateUser(user: UserEntity)
+
+    @Query("SELECT * FROM users WHERE id = :userId LIMIT 1")
+    suspend fun getUserById(userId: Int): UserEntity?
 }

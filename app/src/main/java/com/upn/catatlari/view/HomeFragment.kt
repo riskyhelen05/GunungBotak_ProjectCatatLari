@@ -20,6 +20,9 @@ import com.upn.catatlari.databinding.FragmentHomeBinding
 import com.upn.catatlari.viewmodel.RunViewModel
 import com.upn.catatlari.data.local.entity.RunEntity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.upn.catatlari.data.local.database.AppDatabase
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class HomeFragment : Fragment() {
@@ -38,19 +41,29 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val sharedPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+        val userId = sharedPref.getInt("userId", -1)
+
+        if (userId != -1) {
+            loadUserData(userId)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val sharedPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
         val userId = sharedPref.getInt("userId", -1)
-        val userName = sharedPref.getString("userName", "Pelari")
 
         if (userId == -1) {
-            Log.e("HOME", "Akses ditolak: Sesi pengguna tidak valid.")
+            Log.e("HOME", "User ticak valid.")
             return
         }
 
-        binding.welcomingTxt.text = "Halo, $userName"
+        loadUserData(userId)
 
         val runAdapter = RunAdapter()
 
@@ -177,6 +190,20 @@ class HomeFragment : Fragment() {
                     dialog.dismiss()
                 }
                 .show()
+        }
+    }
+    private fun loadUserData(userId: Int) {
+        val db = AppDatabase.getDatabase(requireContext())
+        val userDao = db.userDao()
+
+        lifecycleScope.launch {
+            val user = userDao.getUserById(userId)
+
+            if (user != null) {
+                binding.welcomingTxt.text = "Halo, ${user.nama}"
+            } else {
+                binding.welcomingTxt.text = "Halo, Pelari"
+            }
         }
     }
 }
