@@ -89,3 +89,11 @@ Aplikasi ini dikembangkan sebagai bagian dari tugas mata kuliah **Pemrograman Mo
 - Manajemen state dan session pengguna
 
 ---
+
+## ⚙️ Cara Menjalankan Aplikasi
+
+1. Clone repository ini
+2. Buka di Android Studio
+3. Jalankan emulator / device
+4. Klik Run
+
