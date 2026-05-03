@@ -72,12 +72,12 @@ Pengguna dapat menyimpan data lari seperti tanggal, jarak tempuh, dan durasi. Ap
 
 ## 👥 Tim Pengembang
 
-| Nama Lengkap               | NPM         | Tanggung Jawab        |
-|--------------------------|------------|----------------------|
-| An Nisa' Fatmawati       | 24082010053 | Navigasi & Session   |
-| Helen Risky Dwi Wahyuni  | 24082010054 | Manajemen Data Run (Database & Integrasi)       |
-| Talitha Nabila Candra    | 24082010061 | Profil Pengguna      |
-| Rindi Antika Qumalasari  | 24082010064 | Fitur Run            |
+| Nama Lengkap               | NPM         | Tanggung Jawab                            |
+|--------------------------|------------|-------------------------------------------|
+| An Nisa' Fatmawati       | 24082010053 | Navigasi & Session                        |
+| Helen Risky Dwi Wahyuni  | 24082010054 | Manajemen Data Run (Database & Integrasi) |
+| Talitha Nabila Candra    | 24082010061 | Halaman Pengguna                          |
+| Rindi Antika Qumalasari  | 24082010064 | Fitur Run                                 |
 
 ---
 
