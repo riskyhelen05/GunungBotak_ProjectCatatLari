@@ -18,4 +18,5 @@ interface RunDao {
 
     @Update
     suspend fun updateRun(run: RunEntity)
+
 }
