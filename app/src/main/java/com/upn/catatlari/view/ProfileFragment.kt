@@ -17,6 +17,13 @@ class ProfileFragment : Fragment() {
 
         binding.btnLogout.setOnClickListener { requireActivity().finish() }
 
+        // Edit profil
+//        binding.btnEditProfile.setOnClickListener {
+//            parentFragmentManager.beginTransaction()
+//                .replace(R.id.fragment_container, EditProfileFragment())
+//                .addToBackStack(null)
+//                .commit()
+//        }
         return binding.root
     }
 
